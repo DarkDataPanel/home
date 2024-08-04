@@ -1,0 +1,142 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Data Panel v2.0 - Bienvenida y Guía</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1089/1089292.png" type="image/x-icon">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyAIUtwNU38wJmsaB3du56HJvp6HlNNV91E",
+    authDomain: "dark-panel-1.firebaseapp.com",
+    projectId: "dark-panel-1",
+    storageBucket: "dark-panel-1.appspot.com",
+    messagingSenderId: "756405483213",
+    appId: "1:756405483213:web:6d2e1f70d1b7a2f71f5b84"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (!user) {
+      // Redirect to login.html if not logged in
+      window.location.href = 'login.html';
+    }
+  });
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+  :root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #ffffff;
+    --highlight-color: #00ff9d;
+    --shadow-color: rgba(0, 255, 157, 0.3);
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  h1, h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--highlight-color);
+    text-shadow: 0 0 10px var(--shadow-color);
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+
+  p {
+    margin-bottom: 20px;
+  }
+
+  .highlight {
+    color: var(--highlight-color);
+    font-weight: bold;
+  }
+
+  .warning {
+    background-color: rgba(255, 0, 0, 0.1);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  ul {
+    padding-left: 20px;
+  }
+
+  li {
+    margin-bottom: 10px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenida y Guía a Dark Data Panel v2.0</h1>
+    
+    <p>Estimados usuarios de Dark Data Panel v2.0,</p>
+
+    <p>Nos complace darles la bienvenida a <span class="highlight">Dark Data v2.0</span>, su nuevo centro de operaciones con accesos a herramientas y de más. Este panel ha sido diseñado meticulosamente para proporcionar acceso rápido y fácil a una variedad de herramientas esenciales para su experiencia y necesidades.</p>
+
+    <h2>Características principales:</h2>
+    <ul>
+      <li><strong>Herramientas curadas:</strong> Hemos seleccionado cuidadosamente las mejores herramientas disponibles para garantizar su privacidad, seguridad y eficiencia.</li>
+      <li><strong>Interfaz intuitiva:</strong> Nuestro diseño limpio y fácil de usar le permite encontrar rápidamente la herramienta que necesita.</li>
+      <li><strong>Actualizaciones y Anuncios:</strong> Manténgase informado sobre las últimas novedades y mejoras en nuestras herramientas.</li>
+      <li><strong>Búsqueda integrada:</strong> Encuentre fácilmente herramientas, anuncios y actualizaciones con nuestras barras de búsqueda dedicadas.</li>
+    </ul>
+
+    <h2>Cómo usar Dark Data v2.0:</h2>
+    <ol>
+      <li>Explore la sección de "Anuncios y Actualizaciones" para mantenerse al día con las últimas noticias y mejoras.</li>
+      <li>Utilice la barra de búsqueda de herramientas para encontrar rápidamente la utilidad que necesita.</li>
+      <li>Haga clic en una tarjeta de herramienta para obtener más información y acceder a ella.</li>
+      <li>Lea cuidadosamente las descripciones y advertencias antes de usar cualquier herramienta.</li>
+    </ol>
+
+    <div class="warning">
+      <h2>Advertencia:</h2>
+      <p>Las herramientas que nosotros proporcionamos son webs publicas, nosotros nos esforzamos para analizar primero las páginas de las herramientas para que así tengan seguridad al navegar y a la vez no conlleve ningun tipo de reisgo. Nos liberamos de responsabilidades sobre el uso de las herramientas que le den los usuarios.</p>
+    </div>
+
+    <p>Esperamos que encuentre a Dark Data v2.0 útil y eficiente. Estamos comprometidos a mejorar continuamente nuestra plataforma para satisfacer sus necesidades sobre el uso de nuestras herramientas alojado en nuestro panel.</p>
+
+    <p>Use nuestro panel adecuadamente,</p>
+    <p>Atte: El equipo de Dark Data Panel v2.0</p>
+
+    <div class="footer">
+      <p>&copy; 2023 Dark Web Tools Panel. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</body>
+</html>

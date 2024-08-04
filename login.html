@@ -1,0 +1,177 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Web Tools - Login</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1089/1089292.png" type="image/x-icon">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+  :root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #ffffff;
+    --highlight-color: #00ff9d;
+    --shadow-color: rgba(0, 255, 157, 0.3);
+    --error-color: #ff4d4d;
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-container {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--highlight-color);
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    text-shadow: 0 0 10px var(--shadow-color);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    font-size: 1rem;
+  }
+
+  input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--highlight-color);
+  }
+
+  button {
+    background-color: var(--highlight-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    background-color: var(--text-color);
+  }
+
+  .error-message {
+    color: var(--error-color);
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .forgot-password {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .forgot-password a {
+    color: var(--highlight-color);
+    text-decoration: none;
+  }
+
+  .forgot-password a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Dark Web Tools Login</h1>
+    <form id="login-form">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required>
+      
+      <button type="submit">Login</button>
+    </form>
+    <p id="error-message" class="error-message"></p>
+    <p class="forgot-password">
+      <a href="https://darkweb-tools.onion/forgot-password">Forgot Password?</a>
+    </p>
+  </div>
+
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIUtwNU38wJmsaB3du56HJvp6HlNNV91E",
+      authDomain: "dark-panel-1.firebaseapp.com",
+      projectId: "dark-panel-1",
+      storageBucket: "dark-panel-1.appspot.com",
+      messagingSenderId: "756405483213",
+      appId: "1:756405483213:web:6d2e1f70d1b7a2f71f5b84"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    const loginForm = document.getElementById('login-form');
+    const errorMessage = document.getElementById('error-message');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const userCredential = await firebase.auth().signInWithEmailAndPassword(email, password);
+        // Signed in 
+        const user = userCredential.user;
+        console.log("User logged in:", user);
+        
+        // Get the user's ID token
+        const idToken = await user.getIdToken();
+        
+        // Store the token in localStorage
+        localStorage.setItem('authToken', idToken);
+        
+        // Redirect to dashboard
+        window.location.href = 'dark-panel.html';
+      } catch (error) {
+        console.error("Error during login:", error);
+        errorMessage.textContent = error.message || 'Login failed. Please try again.';
+      }
+    });
+  </script>
+</body>
+</html>

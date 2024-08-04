@@ -1,0 +1,110 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Web Tools</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1089/1089292.png" type="image/x-icon">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@300;400&display=swap');
+
+  :root {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --highlight-color: #00ff9d;
+    --shadow-color: rgba(0, 255, 157, 0.3);
+    --button-hover: #00cc7d;
+  }
+
+  body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .container {
+    text-align: center;
+  }
+
+  h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    color: var(--highlight-color);
+    text-shadow: 0 0 10px var(--shadow-color);
+    margin-bottom: 2rem;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px var(--shadow-color);
+    }
+    to {
+      text-shadow: 0 0 20px var(--shadow-color), 0 0 30px var(--shadow-color);
+    }
+  }
+
+  .btn {
+    display: inline-block;
+    background-color: var(--highlight-color);
+    color: var(--bg-color);
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn:hover {
+    background-color: var(--button-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 255, 157, 0.4);
+  }
+
+  .particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+</style>
+</head>
+<body>
+  <div class="particles" id="particles-js"></div>
+  
+  <div class="container">
+    <h1>Dark Web Tools</h1>
+    <a href="login.html" class="btn">Iniciar Sesión</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 800 } },
+        color: { value: "#00ff9d" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: "#00ff9d", opacity: 0.4, width: 1 },
+        move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out", bounce: false }
+      },
+      interactivity: {
+        detect_on: "canvas",
+        events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+        modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+      },
+      retina_detect: true
+    });
+  </script>
+</body>
+</html>

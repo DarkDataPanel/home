@@ -1,0 +1,501 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Data Panel v2.0</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1089/1089292.png" type="image/x-icon">
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyAIUtwNU38wJmsaB3du56HJvp6HlNNV91E",
+    authDomain: "dark-panel-1.firebaseapp.com",
+    projectId: "dark-panel-1",
+    storageBucket: "dark-panel-1.appspot.com",
+    messagingSenderId: "756405483213",
+    appId: "1:756405483213:web:6d2e1f70d1b7a2f71f5b84"
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (!user) {
+      // Redirect to login.html if not logged in
+      window.location.href = 'login.html';
+    }
+  });
+</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap');
+
+  :root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-color: #ffffff;
+    --highlight-color: #00ff9d;
+    --shadow-color: rgba(0, 255, 157, 0.3);
+    --glow-color: rgba(255, 255, 255, 0.5);
+  }
+
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    flex-grow: 1;
+  }
+  
+  h1, h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--highlight-color);
+    text-shadow: 0 0 10px var(--shadow-color);
+    letter-spacing: 2px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .description {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--text-color);
+    opacity: 0.8;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .search-bar {
+    width: 300px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    background-color: rgba(30, 30, 30, 0.8);
+    border: 1px solid var(--text-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .search-bar:focus {
+    outline: none;
+    border-color: var(--highlight-color);
+    box-shadow: 0 0 10px var(--glow-color);
+  }
+  
+  .tools-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .tool-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: calc(25% - 15px);
+    box-sizing: border-box;
+  }
+  
+  .tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-color: var(--highlight-color);
+  }
+  
+  .tool-icon {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 15px;
+  }
+  
+  .tool-name {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--highlight-color);
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(18, 18, 18, 0.8);
+  }
+  
+  .modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid var(--highlight-color);
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+  .close {
+    color: var(--text-color);
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .use-btn {
+    background-color: var(--highlight-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .use-btn:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+  }
+
+  .announcements {
+    margin-bottom: 30px;
+  }
+
+  .announcement-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--text-color);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .announcement-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    border-color: var(--highlight-color);
+  }
+
+  .announcement-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    color: var(--highlight-color);
+    margin-bottom: 5px;
+  }
+
+  .announcement-date {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 15px;
+  }
+
+  .page-btn {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+
+  .page-btn:hover, .page-btn.active {
+    background-color: var(--highlight-color);
+    color: var(--bg-color);
+  }
+
+  .footer {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 1200px) {
+    .tool-card {
+      width: calc(33.33% - 13.33px);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .tool-card {
+      width: calc(50% - 10px);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .tool-card {
+      width: 100%;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+    }
+    .search-bar {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dark Data Panel v2.0</h1>
+    <p class="description">
+      Bienvenido a Dark Data Panel v2.0. Aquí encontrarás una colección curada de herramientas esenciales para buscar información, herramientas busqueda de datos, etc. Desde mensajería anónima hasta encriptación de archivos, nuestro panel ofrece acceso rápido a las mejores utilidades disponibles. Mantente informado con nuestras últimas actualizaciones y anuncios, y aprovecha al máximo tu experiencia con nuestras herramientas desde Dark Data Panel v2.0
+    </p>
+
+    <h2>Anuncios y Actualizaciones</h2>
+    <input type="text" id="announcement-search" class="search-bar" placeholder="Buscar anuncios y actualizaciones...">
+    <div id="announcements" class="announcements"></div>
+    <div id="announcement-pagination" class="pagination"></div>
+
+    <h2>Herramientas</h2>
+    <input type="text" id="tool-search" class="search-bar" placeholder="Buscar herramientas...">
+    <div class="tools-grid" id="tools-grid"></div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modal-title"></h2>
+      <p id="modal-description"></p>
+      <a id="modal-use-btn" class="use-btn" target="_blank">Use Tool</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2024 Dark Data Panel v2.0. Todos los Derechos Reservados.</p>
+  </footer>
+
+  <script>
+    const tools = [
+      {
+        name: "Gmail Generator",
+        icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIBoInAjTqQnR3vgHiDvjzWYExt99_YKWX_w&s",
+        description: "Con esta herramienta podras tener correos temporales con terminación @gmail.com, @dominiorandom y @googlemail.com. Puedes habilitar también correos temporales por 10 minutos.",
+        url: "https://www.emailnator.com/"
+      },
+      {
+        name: "Generador de MultiCorreos",
+        icon: "https://cdn-icons-png.flaticon.com/512/6069/6069541.png",
+        description: "De un Correo Electronico (Base - Personal) genera varios dominios de correos, al utilizar cualquier dominio el correo que le llegue a ese dominio le llegara a tu correo Electronico Base - Personal.",
+        url: "https://generator.email/blog/gmail-generator"
+      },
+      {
+        name: "Generador de Tarjetas",
+        icon: "https://www.bbva.com.ar/content/dam/public-web/argentina/images/generador-de-tarjetas-de-credito-que-es/additional-credit-card3x.im1696624109043im.png?imwidth=960",
+        description: "Genera Tarjetas de Credito o Debito a Base de BINs, las tarjetas de creditos serán válidas y funcionales para poder sacar pruebas gratuitas de plataformas como Mubi, Spotify, etc. A la vez son válidas para comprar suscripciones.",
+        url: "#"
+      },
+      {
+        name: "Card Data Checker",
+        icon: "https://cdn-icons-png.flaticon.com/512/6897/6897590.png",
+        description: "Verifica los Dato de una Tarjeta de Credito, tendras información si la Tarjeta es valida y esta lista para usar o es invalida, obten información del bin y el tipo de tarjeta.",
+        url: "#"
+      },
+      {
+        name: "User Data Generator",
+        icon: "https://cdn-icons-png.flaticon.com/512/3056/3056329.png",
+        description: "Genera Datos de Usuarios para rellenar datos de tarjetas en distintas plataformas, saca direcciones reales, nombres y apellidos, fecha de nacimiento, telefono y ciudad.",
+        url: "#"
+      },
+      {
+        name: "Sacar DNI por Nombres",
+        icon: "https://i.ibb.co/CmMM2Vg/hhhhh-removebg-preview.png",
+        description: "Saca el DNI de una Persona con solo buscar el Nombre. Debes Colocar Correctamente el Nombre y Apellido de la persona a la que buscas, si los datos no estan correctos probablemente no aparecera el dato solicitado.",
+        url: "t.ly/GNBNB"
+      },
+      {
+        name: "Buscar Persona por DNI",
+        icon: "https://cdn-icons-png.flaticon.com/512/2303/2303845.png",
+        description: "Busca a una Persona por su número de DNI, debes colocar correctamente el Número de su DNI, si colocaste los dígitos correctamente te saldran los datos de la persona a la que buscas.",
+        url: "https://dni-peru.com/buscar-dni-nombres-apellidos/"
+      },
+      {
+        name: "Buscar RUC a partir de un número de DNI",
+        icon: "https://apps.odoo.com/web/image/loempia.module/157336/icon_image?unique=4af1218",
+        description: "Busca el Usuario RUC a partir de el DNI de una persona, con el Usuario RUC puedes ver la información detallada de una persona (Si ya sabes su usuario RUC Usa la Herramienta RUC Checker para sacar más información).",
+        url: "https://dni-peru.com/dni-ruc/"
+      },
+      {
+        name: "DNI Digit Verifier",
+        icon: "https://cdn.www.gob.pe/uploads/medium/archive/000/010/331/dni-digito-verificador.png",
+        description: "Podrás sacar el Dígito verificador del DNI Buscado.",
+        url: "https://dni-peru.com/digito-verificador-dni/"
+      },
+      {
+        name: "RUC Checker",
+        icon: "https://image.winudf.com/v2/image1/cGUub3JnLmNvbnN1bHRhcnVjLmNvbnN1bHRhcnVjb3JncGVfaWNvbl8xNjE4NDI1MDczXzAzOA/icon.png?w=184&fakeurl=1",
+        description: "Saca los Datos RUC de una Persona por medio de su usuario RUC (Si no sabes el usuario RUC de una persona sacala con la herramienta de Buscar RUC a partir de un número de DNI)",
+        url: "https://dni-peru.com/sunat/consulta-ruc/"
+      },
+      {
+        name: "Saber Edad",
+        icon: "https://cdn.icon-icons.com/icons2/37/PNG/512/age_theapplication_3019.png",
+        description: "Averigua la edad de cualquier persona solamente con su Número de DNI.",
+        url: "https://dni-peru.com/saber-edad-con-dni/"
+      },
+    ];
+
+    const announcements = [
+      {
+        title: "📌 Bienvenida y Guía de Dark Data Panel v2.0",
+        date: "2024-03-20",
+        url: "bienvenida-y-guia.html"
+      },
+    ];
+
+    const toolsGrid = document.getElementById('tools-grid');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const modalUseBtn = document.getElementById('modal-use-btn');
+    const closeBtn = document.getElementsByClassName('close')[0];
+    const toolSearchBar = document.getElementById('tool-search');
+    const announcementSearchBar = document.getElementById('announcement-search');
+    const announcementsContainer = document.getElementById('announcements');
+    const announcementPagination = document.getElementById('announcement-pagination');
+
+    function createToolCard(tool) {
+      const card = document.createElement('div');
+      card.className = 'tool-card';
+      card.innerHTML = `
+        <img src="${tool.icon}" alt="${tool.name} icon" class="tool-icon">
+        <div class="tool-name">${tool.name}</div>
+      `;
+      card.addEventListener('click', () => openModal(tool));
+      return card;
+    }
+
+    function renderTools(toolsToRender) {
+      toolsGrid.innerHTML = '';
+      toolsToRender.forEach(tool => {
+        toolsGrid.appendChild(createToolCard(tool));
+      });
+    }
+
+    function openModal(tool) {
+      modalTitle.textContent = tool.name;
+      modalDescription.textContent = tool.description;
+      modalUseBtn.href = tool.url;
+      modal.style.display = 'block';
+    }
+
+    closeBtn.onclick = () => {
+      modal.style.display = 'none';
+    }
+
+    window.onclick = (event) => {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    toolSearchBar.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filteredTools = tools.filter(tool => 
+        tool.name.toLowerCase().includes(searchTerm) || 
+        tool.description.toLowerCase().includes(searchTerm)
+      );
+      renderTools(filteredTools);
+    });
+
+    function createAnnouncementCard(announcement) {
+      const card = document.createElement('div');
+      card.className = 'announcement-card';
+      card.innerHTML = `
+        <div class="announcement-title">${announcement.title}</div>
+        <div class="announcement-date">${announcement.date}</div>
+      `;
+      card.addEventListener('click', () => window.open(announcement.url, '_blank'));
+      return card;
+    }
+
+    function renderAnnouncements(announcementsToRender, page = 1) {
+      announcementsContainer.innerHTML = '';
+      const startIndex = (page - 1) * 5;
+      const endIndex = startIndex + 5;
+      const pageAnnouncements = announcementsToRender.slice(startIndex, endIndex);
+      
+      pageAnnouncements.forEach(announcement => {
+        announcementsContainer.appendChild(createAnnouncementCard(announcement));
+      });
+
+      renderPagination(announcementsToRender.length, page);
+    }
+
+    function renderPagination(totalItems, currentPage) {
+      const totalPages = Math.ceil(totalItems / 5);
+      announcementPagination.innerHTML = '';
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+        pageBtn.textContent = i;
+        pageBtn.addEventListener('click', () => renderAnnouncements(announcements, i));
+        announcementPagination.appendChild(pageBtn);
+      }
+    }
+
+    announcementSearchBar.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+      const filteredAnnouncements = announcements.filter(announcement => 
+        announcement.title.toLowerCase().includes(searchTerm) || 
+        announcement.date.includes(searchTerm)
+      );
+      renderAnnouncements(filteredAnnouncements);
+    });
+
+    renderTools(tools);
+    renderAnnouncements(announcements);
+  </script>
+</body>
+</html>
